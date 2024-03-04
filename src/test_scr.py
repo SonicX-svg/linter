@@ -1,4 +1,4 @@
-from  scr1 import summa
+from  src.scr1 import summa
 def test_func():
   assert summa(1,2)==3
   
