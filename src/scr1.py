@@ -15,8 +15,6 @@ from datetime import datetime  # для установки даты
 import os  # для работы с файловой системой ПК
 import runpy  # для запуска модулей из файловой системы.
 
-def summa(a,b):
-    return a+b
 # Текст информации о приложении
 sring_my = """\n\n\n\nHello!\n\nI am called to rescue you from the hellish chaos of life. Where you can define your path, divide it into stages, understand the possibilities of time and your pace. And what is very important, you can see all the work done and admire yourself.\n\nI'll always keep you posted."""
 # Вводим словарь действий и привязываем к ним иконки
@@ -591,119 +589,125 @@ def read_dict():
             dict_ = eval(f.readlines()[0])
 
 
-read_dict()
-root = Tk()
-root.title("Hellper_2.0")
-root["bg"] = "#fafafa"
-icon = PhotoImage(file="aaa.png")
-icon1 = PhotoImage(file="bb.png")
-root.iconphoto(True, icon)
-root.wm_attributes("-alpha", 1)
-root.geometry("980x400")
-# create settings window:
-settings = Toplevel(root)
-root["bg"] = "white"
-settings.title("Hellper_2.0")
-settings.geometry("1000x480")
-root.protocol("WM_DELETE_WINDOW", record)
+if __name__ == "__main__":
+
+    read_dict()
+    root = Tk()
+    root.title("Hellper_2.0")
+    root["bg"] = "#fafafa"
+    icon = PhotoImage(file="aaa.png")
+    icon1 = PhotoImage(file="bb.png")
+    root.iconphoto(True, icon)
+    root.wm_attributes("-alpha", 1)
+    root.geometry("980x400")
+    # create settings window:
+    settings = Toplevel(root)
+    root["bg"] = "white"
+    settings.title("Hellper_2.0")
+    settings.geometry("1000x480")
+    root.protocol("WM_DELETE_WINDOW", record)
 
 
-root.wm_withdraw()  # скрываем окно до окончания настройки
+    root.wm_withdraw()  # скрываем окно до окончания настройки
 
-settings.wm_withdraw()  # скрываем окно до окончания настройки
-my_font2 = font.Font(family="Arial", size=17, weight="bold")
-my_font = font.Font(family="Arial", size=17, weight="normal")
-if os.stat("settings.txt").st_size < 5:
-    hello()
+    settings.wm_withdraw()  # скрываем окно до окончания настройки
+    my_font2 = font.Font(family="Arial", size=17, weight="bold")
+    my_font = font.Font(family="Arial", size=17, weight="normal")
+    if os.stat("settings.txt").st_size < 5:
+        hello()
+    else:
+        root.deiconify()
+    frame = Frame(root, bg="white", width=200, height=200)
+    frame.pack(fill=BOTH, expand=True, side=RIGHT)
+
+    current_font = font.Font(weight="bold", size=13)
+    dt_now = str(datetime.now()).split()[0].split("-")
+    tkc = Calendar(
+        frame,
+        selectmode="day",
+        year=int(dt_now[0]),
+        month=int(dt_now[1]),
+        date=int(dt_now[2]),
+        foreground="darkorange1",
+        font=current_font,
+        background="white",
+        bordercolor="azure2",
+        headersbackground="white",
+        weekendbackground="white",
+        othermonthbackground="floralwhite",
+        weekendforeground="black",
+        othermonthwebackground="floralwhite",
+        showweeknumbers=False,
+        day=int(dt_now[2]),
+        disabledselectbackground="yellow",
+        disabledselectforeground="blue",
+        disableddaybackground="pink",
+        selectbackground="green",
+    )
+    tkc.pack(fill="both", expand=True, padx=17, pady=4)
+    tkc.bind("<<CalendarSelected>>", updateLabel)  # нажатие на дату
+
+
+    frame1 = Frame(root, bg="white", width=200, height=200)
+    frame1.pack(fill=BOTH, expand=True, side=RIGHT)
+    frame4 = Frame(frame1, bg="white")
+    frame4.pack(side="top", fill=X)
+    frame3 = Frame(frame1, bg="white")
+    frame3.pack(side=TOP, fill=BOTH, expand=True)
+    btn1 = Button(frame4, text="ADD", bg="white", command=func1)
+    btn1.pack(side=LEFT)
+    labelblue = Label(frame4, text="Selected Date: ", font=40, bg="white")
+    labelblue.pack(side=LEFT)
+    labelblue.config(text="Selected Date: " + tkc.get_date(), font=85)
+
+
+    # Для погоды по геолокации
+    image = Image.open("picture.png")
+    resized_image = image.resize((28, 28))
+    photo = ImageTk.PhotoImage(resized_image)
+
+    # фрейм с погодой
+    frame2 = Frame(frame, bg="white", width=100, height=100)
+    frame2.pack(side="top", fill=X, pady=13)
+
+    # кнопка с фото
+    btn = Button(frame2, text="Создать задачу", bg="white", image=photo, command=func)
+    btn.configure(width=28, height=28)
+    btn.pack(side=LEFT, padx=17, pady=1)
+
+    user_name = Label(
+        frame2, text="wheather", font=25, bg="white", highlightthickness=0, bd=0
+    )
+    user_name.pack(side=LEFT)
+    my_font2 = font.Font(family="Arial", size=10, weight="bold")
+
+
+    # функция отправки почты
+    # модуль с моделью генерации текста письма вынесен в отдельный файл
+    def send_mail():
+        runpy.run_module(mod_name="email_and_ml")  # запускаем  модель
+
+
+    btn_for_email = Button(
+        frame2,
+        text="Send mail",
+        bg="white",
+        highlightthickness=2,
+        bd=1,
+        font=my_font2,
+        command=send_mail,
+    )
+    btn_for_email.config(highlightbackground="blue violet", highlightcolor="blue violet")
+    btn_for_email.pack(side=RIGHT, padx=19)
+    btn.invoke()  # кнопка  нажатие
+    print("cick")
+
+
+    updateLabel("a")
+
+
+    root.mainloop()
+
 else:
-    root.deiconify()
-frame = Frame(root, bg="white", width=200, height=200)
-frame.pack(fill=BOTH, expand=True, side=RIGHT)
-
-current_font = font.Font(weight="bold", size=13)
-dt_now = str(datetime.now()).split()[0].split("-")
-tkc = Calendar(
-    frame,
-    selectmode="day",
-    year=int(dt_now[0]),
-    month=int(dt_now[1]),
-    date=int(dt_now[2]),
-    foreground="darkorange1",
-    font=current_font,
-    background="white",
-    bordercolor="azure2",
-    headersbackground="white",
-    weekendbackground="white",
-    othermonthbackground="floralwhite",
-    weekendforeground="black",
-    othermonthwebackground="floralwhite",
-    showweeknumbers=False,
-    day=int(dt_now[2]),
-    disabledselectbackground="yellow",
-    disabledselectforeground="blue",
-    disableddaybackground="pink",
-    selectbackground="green",
-)
-tkc.pack(fill="both", expand=True, padx=17, pady=4)
-tkc.bind("<<CalendarSelected>>", updateLabel)  # нажатие на дату
-
-
-frame1 = Frame(root, bg="white", width=200, height=200)
-frame1.pack(fill=BOTH, expand=True, side=RIGHT)
-frame4 = Frame(frame1, bg="white")
-frame4.pack(side="top", fill=X)
-frame3 = Frame(frame1, bg="white")
-frame3.pack(side=TOP, fill=BOTH, expand=True)
-btn1 = Button(frame4, text="ADD", bg="white", command=func1)
-btn1.pack(side=LEFT)
-labelblue = Label(frame4, text="Selected Date: ", font=40, bg="white")
-labelblue.pack(side=LEFT)
-labelblue.config(text="Selected Date: " + tkc.get_date(), font=85)
-
-
-# Для погоды по геолокации
-image = Image.open("picture.png")
-resized_image = image.resize((28, 28))
-photo = ImageTk.PhotoImage(resized_image)
-
-# фрейм с погодой
-frame2 = Frame(frame, bg="white", width=100, height=100)
-frame2.pack(side="top", fill=X, pady=13)
-
-# кнопка с фото
-btn = Button(frame2, text="Создать задачу", bg="white", image=photo, command=func)
-btn.configure(width=28, height=28)
-btn.pack(side=LEFT, padx=17, pady=1)
-
-user_name = Label(
-    frame2, text="wheather", font=25, bg="white", highlightthickness=0, bd=0
-)
-user_name.pack(side=LEFT)
-my_font2 = font.Font(family="Arial", size=10, weight="bold")
-
-
-# функция отправки почты
-# модуль с моделью генерации текста письма вынесен в отдельный файл
-def send_mail():
-    runpy.run_module(mod_name="email_and_ml")  # запускаем  модель
-
-
-btn_for_email = Button(
-    frame2,
-    text="Send mail",
-    bg="white",
-    highlightthickness=2,
-    bd=1,
-    font=my_font2,
-    command=send_mail,
-)
-btn_for_email.config(highlightbackground="blue violet", highlightcolor="blue violet")
-btn_for_email.pack(side=RIGHT, padx=19)
-btn.invoke()  # кнопка  нажатие
-print("cick")
-
-
-updateLabel("a")
-
-
-root.mainloop()
+   def summa(a,b):
+       return a+b
