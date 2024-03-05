@@ -607,7 +607,6 @@ if __name__ == "__main__":
     settings.geometry("1000x480")
     root.protocol("WM_DELETE_WINDOW", record)
 
-
     root.wm_withdraw()  # скрываем окно до окончания настройки
 
     settings.wm_withdraw()  # скрываем окно до окончания настройки
@@ -647,7 +646,6 @@ if __name__ == "__main__":
     tkc.pack(fill="both", expand=True, padx=17, pady=4)
     tkc.bind("<<CalendarSelected>>", updateLabel)  # нажатие на дату
 
-
     frame1 = Frame(root, bg="white", width=200, height=200)
     frame1.pack(fill=BOTH, expand=True, side=RIGHT)
     frame4 = Frame(frame1, bg="white")
@@ -659,7 +657,6 @@ if __name__ == "__main__":
     labelblue = Label(frame4, text="Selected Date: ", font=40, bg="white")
     labelblue.pack(side=LEFT)
     labelblue.config(text="Selected Date: " + tkc.get_date(), font=85)
-
 
     # Для погоды по геолокации
     image = Image.open("picture.png")
@@ -681,12 +678,10 @@ if __name__ == "__main__":
     user_name.pack(side=LEFT)
     my_font2 = font.Font(family="Arial", size=10, weight="bold")
 
-
     # функция отправки почты
     # модуль с моделью генерации текста письма вынесен в отдельный файл
     def send_mail():
         runpy.run_module(mod_name="email_and_ml")  # запускаем  модель
-
 
     btn_for_email = Button(
         frame2,
@@ -697,19 +692,19 @@ if __name__ == "__main__":
         font=my_font2,
         command=send_mail,
     )
-    btn_for_email.config(highlightbackground="blue violet", highlightcolor="blue violet")
+    btn_for_email.config(
+        highlightbackground="blue violet", highlightcolor="blue violet"
+    )
     btn_for_email.pack(side=RIGHT, padx=19)
     btn.invoke()  # кнопка  нажатие
     print("cick")
 
-
     updateLabel("a")
-
 
     root.mainloop()
 
 else:
-   
-   def summa(a,b):
-       print('undirect run')
-       return a+b
+
+    def summa(a, b):
+        print("undirect run")
+        return a + b
