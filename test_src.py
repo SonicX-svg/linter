@@ -1,4 +1,4 @@
-from src.scr1 import summa
+from scr1 import summa
 
 
 # from src import pc
